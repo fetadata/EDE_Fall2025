@@ -1,6 +1,7 @@
 # Environmental Data Exploration - Fall 2025
 ENV 872 - Environmental Data Exploration - Fall 2025  
-Instructors Joshua Salzberg
+Instructors Joshua Salzberg 
+
 Nicholas School of the Environment  
 Duke University  
 
