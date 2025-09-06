@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1: Introduction"
-author: "Student Name"
+author: "Joshua Salzberg"
 output: pdf_document
 ---
 
@@ -23,14 +23,17 @@ Enter answers to the questions just below the >Answer: prompt.
 1. What are your previous experiences with data analytics, R, and Git? Include both formal and informal training.
 
 > Answer: 
+I have some minimal understandings of data analytics. I have always enjoyed exploring correlations, whether that's attempting to understand population distributions near railways in Durham via haphazard maps or attempting to briefly analyze the interrelationships between residential construction and rent prices via underbaked regressions. In an undergraduate class I learned how to use R for social media data mining; of that course, I remember how basic R syntax works, but I don't remember the details of ggplotly or pandas. I've never used Git. 
 
 2. Are there any components of the course about which you feel confident?
 
 > Answer: 
+I feel confident that the support of my peers will create a wonderful learning environment. I feel confident that I can learn how to wrangle, process and generate new insights using data. 
 
 3. Are there any components of the course about which you feel apprehensive?
 
 > Answer: 
+I have apprehensions regarding the level of mathematical fluency that might be expected. 
 
 
 ## 2) GitHub
@@ -38,6 +41,7 @@ Enter answers to the questions just below the >Answer: prompt.
 Provide a link below to your forked course repository in GitHub. Make sure you have pulled all recent changes from the course repository and that you have updated your course README file, committed those changes, and pushed them to your GitHub account. 
 
 > Answer: 
+https://github.com/fetadata/EDE_Fall2025
 
 ## 3) Knitting
 When you have completed this document, click the `knit` button.This should produce a PDF copy of your markdown document. Submit this PDF to Canvas 
