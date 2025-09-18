@@ -3,22 +3,32 @@ title: "Lab 3b - Workspaces, Dates, and Factors"
 author: "Environmental Data Analytics | John Fay and Luana Lima "
 date: "Fall 2025"
 output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+  chunk_output_type: console
 ---
 
 ## Objectives
-1.    More practice with working directories & here()
-2.    More practice with dates: the `lubridate()` package
-3.    Discuss `stringsAsFactors = TRUE` and what "factors" are
 
----
+1.  More practice with working directories & here()
+2.  More practice with dates: the `lubridate()` package
+3.  Discuss `stringsAsFactors = TRUE` and what "factors" are
 
-## 1. Working with Working directories: 
+------------------------------------------------------------------------
+
+## 1. Working with Working directories:
 
 ### Background
 
-Recall that we use R in a project setting: We open our R sessions via the Project dropdown or click on an Rproj file to open a project directly. Normally when we do this, our project working directory is set to the project folder and we can locate all other files via relative paths, i.e., paths relative to where our working directory is set. 
+Recall that we use R in a project setting: We open our R sessions via
+the Project dropdown or click on an Rproj file to open a project
+directly. Normally when we do this, our project working directory is set
+to the project folder and we can locate all other files via relative
+paths, i.e., paths relative to where our working directory is set.
 
-We typically issue the `getwd()` command to confirm that our working directory is as expected: 
+We typically issue the `getwd()` command to confirm that our working
+directory is as expected:
 
 ```{r Getting the working directory}
 # The working directory should be set to the base folder for your forked  
@@ -27,14 +37,18 @@ We typically issue the `getwd()` command to confirm that our working directory i
 getwd()
 ```
 
-We have options to change the working directory, e.g. via the `setwd()` statement or via RStudio's menus. Once changed, however, subsequent calls to relative paths may point to the incorrect locations leading to confusion. 
+We have options to change the working directory, e.g. via the `setwd()`
+statement or via RStudio's menus. Once changed, however, subsequent
+calls to relative paths may point to the incorrect locations leading to
+confusion.
 
 ### An alternative: the `here` package
 
-And thus we introduce the `here` package, designed to streamline this process. A more detailed description of the library and its rationale can be found here: 
- - Overview:    https://here.r-lib.org 
- - Github repo: https://github.com/jennybc/here_here
- 
+And thus we introduce the `here` package, designed to streamline this
+process. A more detailed description of the library and its rationale
+can be found here: - Overview: <https://here.r-lib.org> - Github repo:
+<https://github.com/jennybc/here_here>
+
 ```{r The here package}
 #install.packages('here')
 library(here) #Note this package may conflict with plyr and lubridate
@@ -70,23 +84,41 @@ filenames <- dir(here('Data','Raw'),pattern = ("^N.*csv"))
 print(filenames)
 ```
 
+
+```{r reset home}
+here()
+```
 ### Exercise: the here package in action
 
-1.    Use the `here` package with `read.csv()` to read the `NTL-LTER_Lake_ChemistryPhysics_Raw.csv` file into a dataframe.
-2.    Refer to the example code shown here (https://people.duke.edu/~jpfay/ENV872/here.html) to read in all CSV files starting with "EPAair_O3" into a single dataframe. 
-  -   Note: You'll have to import `tidyverse` for `%>%` to work. Also, you may need to look at additional arguments in the `dir()` function,...
- 
+1.  Use the `here` package with `read.csv()` to read the
+    `NTL-LTER_Lake_ChemistryPhysics_Raw.csv` file into a dataframe.
+2.  Refer to the example code shown here
+    (<https://people.duke.edu/~jpfay/ENV872/here.html>) to read in all
+    CSV files starting with "EPAair_O3" into a single dataframe.
+
+-   Note: You'll have to import `tidyverse` for `%>%` to work. Also, you
+    may need to look at additional arguments in the `dir()` function,...
+
 ```{r here in action}
 
 # 1. Read the 'NTL-LTER_Lake_ChemistryPhysics_Raw.csv' into a dataframe
-
+NTL_Data <- read.csv(
+  file = here('Data','Raw','NTL-LTER_Lake_ChemistryPhysics_Raw.csv'),
+  stringsAsFactors = TRUE
+)
 
 # 2.
 library(tidyverse);library(here)
+folder <- here('Data',"Raw")
+Files <- dir(folder, pattern = "EPAair_O3*.*", full.names = TRUE)
+EPAData <- Files %>%
+  map(read_csv) %>%
+  bind_rows()
+  
 
 ```
 
----
+------------------------------------------------------------------------
 
 ## 2. Working with dates
 
@@ -94,7 +126,9 @@ library(tidyverse);library(here)
 
 Remember formatting of dates in R:
 
-%d day as number (0-31) %m month (00-12, can be e.g., 01 or 1) %y 2-digit year %Y 4-digit year %a abbreviated weekday %A unabbreviated weekday %b abbreviated month %B unabbreviated month
+%d day as number (0-31) %m month (00-12, can be e.g., 01 or 1) %y
+2-digit year %Y 4-digit year %a abbreviated weekday %A unabbreviated
+weekday %b abbreviated month %B unabbreviated month
 
 ```{r Coding with dates}
 # Adjust date formatting for today
@@ -111,9 +145,12 @@ format(today, format = "%B")
 
 ### The `lubridate()` package
 
-Install and load the package lubridate into your R session. Lubridate offers fast and user friendly parsing of date-time data. Create a string for today's data and then convert it to R date object using lubridate.
+Install and load the package lubridate into your R session. Lubridate
+offers fast and user friendly parsing of date-time data. Create a string
+for today's data and then convert it to R date object using lubridate.
 
-More info on lubridate [here][<https://cran.r-project.org/web/packages/lubridate/lubridate.pdf>].
+More info on lubridate
+[here][<https://cran.r-project.org/web/packages/lubridate/lubridate.pdf>].
 
 ```{r DateExercise1}
 #install.packages("lubridate")
@@ -133,12 +170,15 @@ date_obj_today
 
 #Ex_3 - on your own...
 str_juneteenth <- "19 June 1865"
-#date_juneteenth <- ()
-#date_juneteenth
+date_juneteenth <- dmy(str_juneteenth)
+date_juneteenth
 ```
+
 ### The century issue
 
-What happens when you the year in your date column is represented by two digits? Is "55" 2055 or 1955?? Here we build code to deal with that issue. 
+What happens when you the year in your date column is represented by two
+digits? Is "55" 2055 or 1955?? Here we build code to deal with that
+issue.
 
 ```{r DateExercise2}
 #century issue
@@ -166,13 +206,12 @@ fixed_date_obj_past <- fix.early.dates(date_obj_past,cutoff=24)
 fixed_date_obj_past
 ```
 
-
 ```{r centuryfix}
 #Fix for century issue
 str_past <- "55-feb-3"
 
 #Alternative 1
-date_obj_past <- fast_strptime(str_past,"%y-%b-%d",cutoff_2000=24L)
+date_obj_past <- fast_strptime(str_past,"%y-%b-%d",cutoff_2000=25L)
 date_obj_past
 
 #Alternative 2
@@ -182,7 +221,11 @@ date_obj_past2
 #Functions ymd(), mdy(), ydm() do not take argument cutoff_2000
 ```
 
-In some cases when dates are provided as integers, you may need to provide an origin for your dates. For example, excel date could be given as number of days since an origin date. Origin date can be different. When R looks at dates as integers, its origin is January 1, 1970. Check if that is true on your machine.
+In some cases when dates are provided as integers, you may need to
+provide an origin for your dates. For example, excel date could be given
+as number of days since an origin date. Origin date can be different.
+When R looks at dates as integers, its origin is January 1, 1970. Check
+if that is true on your machine.
 
 ```{r dateorigin}
 #Check if "1970-01-01" is your origin date.
@@ -190,7 +233,7 @@ lubridate::origin
 
 ```
 
----
+------------------------------------------------------------------------
 
 ## 3. Factors
 
@@ -209,8 +252,8 @@ sites$date <- ymd_hms(sites$date)
 
 ```
 
-
 ### Examine the lakename column as a character column
+
 Note: `wday` is a `lubridate()` function...
 
 ```{r create and explore days of week column}
@@ -230,6 +273,7 @@ summary(sites$dow)
 ```
 
 ### Convert the days of the week to a factor
+
 ```{r convert dow column to factor and explore}
 
 #Convert to a factor
@@ -251,13 +295,24 @@ levels(sites$dow)
 ### Factors & Levels
 
 #### Factors defined
-A **factor** is a grouping variable: rows with the same value in the factor column are members of the same group. For example, all rows with a `dow` of 3 were collected on a Tuesday.
 
+A **factor** is a grouping variable: rows with the same value in the
+factor column are members of the same group. For example, all rows with
+a `dow` of 3 were collected on a Tuesday.
 
 #### Levels defined
-**Levels** are the unique values that the factors can take. The `unique()` function reveals the levels as does the `levels()` function. By default, the levels includes only the values in the factor column. However, we can add additional levels and we can also re-order levels. Why would we want to do this? Well, one example would be if we wanted to plot the number of samples recorded each day of the week, and in that plot we wanted to include all days of the week, not just the one's found in our data...
+
+**Levels** are the unique values that the factors can take. The
+`unique()` function reveals the levels as does the `levels()` function.
+By default, the levels includes only the values in the factor column.
+However, we can add additional levels and we can also re-order levels.
+Why would we want to do this? Well, one example would be if we wanted to
+plot the number of samples recorded each day of the week, and in that
+plot we wanted to include all days of the week, not just the one's found
+in our data...
 
 #### Plotting with factors
+
 ```{r plot samples recorded each day of the week}
 #Create a bar plot showing the count of samples by day of week
 ggplot(sites,aes(x=dow)) +
@@ -281,10 +336,13 @@ ggplot(sites,aes(x=dow)) +
 
 ```
 
-We now have all days of the week, but the order is incorrect. Also, we have day numbers, not day names. How to fix?
+We now have all days of the week, but the order is incorrect. Also, we
+have day numbers, not day names. How to fix?
 
 #### Reordering and renaming levels
-We can reorder levels simply by overwriting existing levels. 
+
+We can reorder levels simply by overwriting existing levels.
+
 ```{r reorder and rename levels}
 
 #Reorder by overwriting the column with the existing values 
@@ -315,14 +373,14 @@ ggplot(sites,aes(x=dow)) +
 ```
 
 ### Exercise: see if you can plot the number of samples recorded each month
-Code to [re]Read in the USGS dataset is provided
-Hint: Follow the same steps above:
--   Create a column to hold the months, derived from the date-time column
--   Convert the months to a factor
--   Ensure the factor contains levels for all 12 months, in order
--   Ensure the factor contains labels for all 12 months
-Tip:
--   R has a built in variable `month.abb` that holds a list of all 12 months
+
+Code to [re]Read in the USGS dataset is provided Hint: Follow the same
+steps above: - Create a column to hold the months, derived from the
+date-time column - Convert the months to a factor - Ensure the factor
+contains levels for all 12 months, in order - Ensure the factor contains
+labels for all 12 months Tip: - R has a built in variable `month.abb`
+that holds a list of all 12 months
+
 ```{r}
 #[RE]read in the USGS data
 usgs_flow_data <- read.csv(
@@ -343,4 +401,3 @@ usgs_flow_data$month <- month(usgs_flow_data$datetime)
 
 
 ```
-
