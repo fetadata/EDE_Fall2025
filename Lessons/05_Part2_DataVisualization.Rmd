@@ -152,9 +152,9 @@ nationalparkcolors (package)
 * https://github.com/katiejolly/nationalparkcolors
 
 ```{r, warning = FALSE}
-# install.packages("viridis")
-# install.packages("RColorBrewer")
-# install.packages("colormap")
+ install.packages("viridis")
+ install.packages("RColorBrewer")
+ install.packages("colormap")
 library(viridis)
 library(RColorBrewer)
 library(colormap)
@@ -177,7 +177,7 @@ NvsP2 <-
   geom_point(alpha = 0.7, size = 2.5) +
   #labs() + # change your legend labels here
   scale_shape_manual(values = c(15, 17)) +
-  #scale_color_distiller(palette = "Blues", direction = 1) + # use scale_color_brewer for discrete variables
+  scale_color_distiller(palette = "Blues", direction = 1) + # use scale_color_brewer for discrete variables
   scale_color_viridis(option = "magma", direction = -1) +
   theme(legend.position = "right", 
         legend.text = element_text(size = 12), legend.title = element_text(size = 12))
