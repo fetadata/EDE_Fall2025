@@ -32,7 +32,7 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 
 ```{r initialize project}
 #1 
-library(tidyverse); library(here); library(cowplot)
+library(tidyverse); library(here); library(cowplot); library(ggthemes)
 
 here()
 
@@ -49,6 +49,7 @@ NeonNiwotdf <- read.csv(here('Data',
 #2 
 PeterPauldf$sampledate <- ymd(PeterPauldf$sampledate)
 NeonNiwotdf$collectDate <- ymd(NeonNiwotdf$collectDate)
+
 
 ```
 ## Define your theme
@@ -73,8 +74,8 @@ my_theme <- theme_base()  +
     axis.title.x =      element_text(family="Times New Roman",
                                       face = "italic"),
     axis.title.y =      element_text(family = "Times New Roman",
-                                      face = "Italic"),
-    #axis.text =         element_text(),
+                                      face = "italic"),
+    axis.text =         element_text(size = 10),
     
     # Modified inheritance structure of line element
     axis.ticks =        element_line(lineend = "butt"),
@@ -88,7 +89,7 @@ my_theme <- theme_base()  +
     #legend.key =        element_rect(),
     
     # Modifiying legend.position
-    legend.position = 'bottom',
+    legend.position = 'top',
     
     #complete = TRUE
     )
@@ -103,16 +104,19 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 ```{r plot total P vs PO4}
 #4 
 task4 <- ggplot(PeterPauldf)+
-  geom_point(aes(x=po4, y=tp_ug, 
-                 shape = lakename,
-                 color = lakename,
+  geom_point(aes(x=po4, 
+                 y=tp_ug, 
+                 color = lakename, 
+                 shape=lakename, 
                  size = 3, 
                  alpha = 0.75))+
+  geom_smooth(method="lm")+
+  my_theme+
   xlim(0, 100) +
   ylim(0, 125)+
   labs(title = "Comparing PO4 and TP_UG")+
-  xlab("PO4 Readings")+
-  ylab("TP_UG Readings")
+  xlab("PO4 Readings (ppm)")+
+  ylab("TP_UG Readings (ppm)")
 
                
 
@@ -133,11 +137,56 @@ Tips:
 ```{r Create boxplots}
 #5 
 
+task5a <- ggplot(PeterPauldf)+
+  geom_boxplot(aes(x=month, y=temperature_C, fill = lakename))+
+  xlim(0,12)+
+  my_theme+
+  theme(legend.position = "none",
+        plot.margin = margin(0,0,0,10))+
+  ylab("Temperature in Celsius")
+task5b <- ggplot(PeterPauldf)+
+  geom_boxplot(aes(x=month, y=tp_ug, fill = lakename))+
+  xlim(0,12)+
+  my_theme+
+  theme(legend.position = "none",
+          plot.margin = margin(0,0,0,10))+
+  ylab("TP in ppm")
+task5c <- ggplot(PeterPauldf)+
+  geom_boxplot(aes(x=month, y=tn_ug, fill = lakename))+
+  theme(legend.position = "none",
+          plot.margin = margin(0,0,0,10))+
+  my_theme+
+  xlim(0,12)+
+  ylab("TN in ppm")
+
+rowof3 <- plot_grid(task5a, 
+                    task5b, 
+                    task5c, 
+                    nrow = 1, 
+                    align = "hv", 
+                    axis="t", 
+                    rel_widths = c(.75,.75,.75))
+
+legend <- get_legend(task5c 
+                     + 
+                       theme(legend.box.margin = margin(0, 0, 0, 12)))
+
+Task5Title <- ggdraw()+
+  draw_label(
+    "Comparing Temperature, TP and TN at Peter and Paul Lakes",
+    fontface = "bold",
+  ) +
+  theme(
+    plot.margin=margin(0,0,0,7)
+  )
+plot_grid(Task5Title, rowof3, legend, ncol=1,
+          rel_heights = c(0.1,1, .5))
+
 ```
 
 Question: What do you observe about the variables of interest over seasons and between lakes? 
 
-> Answer: 
+> Answer: Interestingly, Peter Lake's data has a longer skew towards cold temperatures, and much longer tails of extreme values in TP and TN.
 
 6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the "Needles" functional group. Plot the dry mass of needle litter by date and separate by NLCD class with a color aesthetic. (no need to adjust the name of each land use)
 
@@ -145,12 +194,32 @@ Question: What do you observe about the variables of interest over seasons and b
 
 ```{r Plot litter}
 #6
+task6 <- ggplot(subset(NeonNiwotdf, functionalGroup == "Needles"))+
+  geom_point(aes(x=collectDate, y=dryMass, color = as.factor(nlcdClass)))+
+  xlab("Collection Date")+
+  ylab("Dry Mass Weight")+
+  theme(legend.title= "Land Cover Types")+
+  labs(title = "Comparing Dry Mass Samples Among 3 Land Covers", 
+       fill = "Land Cover Types")+
+  my_theme
 
+
+task6
 
 #7
 
 
+task7 <- ggplot(subset(NeonNiwotdf, functionalGroup == "Needles"))+
+  geom_point(aes(x=collectDate, y=dryMass))+
+  theme(legend.title= "Land Cover Types")+
+  labs(title = "Comparing Dry Mass Samples Among 3 Land Covers", 
+       fill = "Land Cover Types")+
+  facet_wrap(vars(nlcdClass))+
+  my_theme
+
+
+task7
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer:
+> Answer: despite attempting to differentiate the different land covers by color in Task 6, I believe Task 7 is a much clearer depiction of how the data differ because there is less overlap and more ability to assess each data series separately. 
