@@ -69,14 +69,12 @@ my_theme <- theme_base()  +
     #text =              element_text(),
     
     # Modified inheritance structure of text element
-    plot.title =        element_text(family = "Times New Roman",
+    plot.title =        element_text(family = "mono",
                                      face = "bold"),
-    axis.title.x =      element_text(family="Times New Roman",
+    axis.title.x =      element_text(family="mono",
                                       face = "italic"),
-    axis.title.y =      element_text(family = "Times New Roman",
+    axis.title.y =      element_text(family = "mono",
                                       face = "italic"),
-    axis.text =         element_text(size = 10),
-    
     # Modified inheritance structure of line element
     axis.ticks =        element_line(lineend = "butt"),
     panel.grid.major =  element_line(color = "lightgrey",
@@ -103,10 +101,10 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
-task4 <- ggplot(PeterPauldf)+
-  geom_point(aes(x=po4, 
-                 y=tp_ug, 
-                 color = lakename, 
+task4 <- ggplot(PeterPauldf, 
+                aes(x=po4, 
+                 y=tp_ug))+
+  geom_point(aes(color = lakename, 
                  shape=lakename, 
                  size = 3, 
                  alpha = 0.75))+
@@ -166,6 +164,8 @@ rowof3 <- plot_grid(task5a,
                     align = "hv", 
                     axis="t", 
                     rel_widths = c(.75,.75,.75))
+
+# code below borrowed from cowplot website. 
 
 legend <- get_legend(task5c 
                      + 
