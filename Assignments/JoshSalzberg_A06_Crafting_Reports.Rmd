@@ -126,7 +126,7 @@ O_2018_Boxplot <- ggplot(Ozone2018)+
   geom_boxplot(aes(factor(Month, labels = month.abb), Ozone))+
   labs(title = "Monthly Ozone concentrations (2018)")+
   xlab("Month")+
-  ylab(expression(paste("Concentration (in ", mu,"g","/m"^{3},")")))
+  ylab(expression(paste("Concentration (", mu,"g","/m"^{3},")")))
 
 O_2018_Boxplot
 
@@ -141,7 +141,7 @@ O_2019_Boxplot <- ggplot(Ozone2019)+
   geom_boxplot(aes(factor(Month, labels = month.abb), Ozone))+
   labs(title = "Monthly Ozone concentrations (2019)")+
   xlab("Month")+
-  ylab(expression(paste("Concentration (in ", mu,"g","/m"^{3},")")))
+  ylab(expression(paste("Concentration (", mu,"g","/m"^{3},")")))
 
 O_2019_Boxplot
 
@@ -156,3 +156,10 @@ O_2019_Boxplot
 Add a table of contents and list of figures to your document and knit to a PDF. Submit your PDF to Sakai, but also be sure to commit and push your Rmd file used to create this knit document to GitHub. In the section below, add a link to your GitHub repository. **Lastly, add the statement that you did not use AI in the completion of this assignment followed by your name and the date.**
 
 ## Git Repository
+<https://github.com/fetadata/EDE_Fall2025>
+
+# Statement of No AI Usage
+I, Joshua Salzberg, of relatively sound mind, do hereby declare and promise I have not used AI to complete this assignment. 
+
+*Joshua Salzberg*
+**10/16/2025**
